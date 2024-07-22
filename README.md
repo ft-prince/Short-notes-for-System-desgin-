@@ -438,3 +438,435 @@ Caching improves data retrieval performance by storing frequently accessed data 
 - **Memcached**
 - **Amazon Elasticache**
 - **Aerospike**
+
+
+# Content Delivery Network (CDN)
+
+A content delivery network (CDN) is a geographically distributed group of servers that work together to provide fast delivery of internet content. Generally, static files such as HTML/CSS/JS, photos, and videos are served from CDNs.
+
+### Why use a CDN?
+Content Delivery Networks (CDNs) increase content availability and redundancy while reducing bandwidth costs and improving security. Serving content from CDNs can significantly improve performance as users receive content from data centers close to them, and our servers do not have to serve requests that the CDN fulfills.
+
+### How does a CDN work?
+
+In a CDN, the origin server contains the original versions of the content while the edge servers are numerous and distributed across various locations around the world.
+
+To minimize the distance between the visitors and the website's server, a CDN stores a cached version of its content in multiple geographical locations known as edge locations. Each edge location contains several caching servers responsible for content delivery to visitors within its proximity.
+
+Once the static assets are cached on all the CDN servers for a particular location, all subsequent website visitor requests for static assets will be delivered from these edge servers instead of the origin, thus reducing the origin load and improving scalability.
+
+For example, when someone in the UK requests our website, which might be hosted in the USA, they will be served from the closest edge location such as the London edge location. This is much quicker than having the visitor make a complete request to the origin server, which will increase latency.
+
+### Types of CDNs
+
+**Push CDNs**
+- Push CDNs receive new content whenever changes occur on the server.
+- We take full responsibility for providing content, uploading directly to the CDN, and rewriting URLs to point to the CDN.
+- We can configure when content expires and when it is updated.
+- Content is uploaded only when it is new or changed, minimizing traffic but maximizing storage.
+- Sites with a small amount of traffic or sites with content that isn't often updated work well with push CDNs.
+
+**Pull CDNs**
+- In a Pull CDN situation, the cache is updated based on request.
+- When the client sends a request that requires static assets to be fetched from the CDN, if the CDN doesn't have it, it will fetch the newly updated assets from the origin server and populate its cache with this new asset, and then send this new cached asset to the user.
+- Contrary to the Push CDN, this requires less maintenance because cache updates on CDN nodes are performed based on requests from the client to the origin server.
+- Sites with heavy traffic work well with pull CDNs, as traffic is spread out more evenly with only recently-requested content remaining on the CDN.
+
+### Disadvantages of CDNs
+
+- **Extra charges**: It can be expensive to use a CDN, especially for high-traffic services.
+- **Restrictions**: Some organizations and countries have blocked the domains or IP addresses of popular CDNs.
+- **Location**: If most of our audience is located in a country where the CDN has no servers, the data on our website may have to travel further than without using any CDN.
+
+### Examples of CDNs
+
+- Amazon CloudFront
+- Google Cloud CDN
+- Cloudflare CDN
+- Fastly
+
+---
+
+# Proxy
+
+A proxy server is an intermediary piece of hardware/software sitting between the client and the backend server. It receives requests from clients and relays them to the origin servers. Typically, proxies are used to filter requests, log requests, or sometimes transform requests (by adding/removing headers, encrypting/decrypting, or compression).
+
+### Types of Proxies
+
+**Forward Proxy**
+- A forward proxy, often called a proxy, proxy server, or web proxy, sits in front of a group of client machines.
+- When those computers make requests to sites and services on the internet, the proxy server intercepts those requests and then communicates with web servers on behalf of those clients.
+
+**Advantages of Forward Proxy**
+- Block access to certain content
+- Allows access to geo-restricted content
+- Provides anonymity
+- Avoid other browsing restrictions
+
+**Reverse Proxy**
+- A reverse proxy sits in front of one or more web servers, intercepting requests from clients.
+- When clients send requests to the origin server of a website, those requests are intercepted by the reverse proxy server.
+
+**Advantages of Reverse Proxy**
+- Improved security
+- Caching
+- SSL encryption
+- Load balancing
+- Scalability and flexibility
+
+### Load Balancer vs Reverse Proxy
+A reverse proxy can also act as a load balancer, but a load balancer routes traffic to a set of servers serving the same function. A reverse proxy is useful even with just one web server or application server, whereas a load balancer is used when there are multiple servers.
+
+### Examples of Proxy Technologies
+- Nginx
+- HAProxy
+- Traefik
+- Envoy
+
+---
+
+# Availability
+
+Availability is the time a system remains operational to perform its required function in a specific period. It is a simple measure of the percentage of time that a system, service, or machine remains operational under normal conditions.
+
+### The Nine's of Availability
+
+Availability is often quantified by uptime (or downtime) as a percentage of time the service is available. It is generally measured in the number of 9s.
+
+| Availability (Percent) | Downtime (Year) | Downtime (Month) | Downtime (Week) |
+|------------------------|-----------------|------------------|-----------------|
+| 90% (one nine)         | 36.53 days      | 72 hours         | 16.8 hours      |
+| 99% (two nines)        | 3.65 days       | 7.20 hours       | 1.68 hours      |
+| 99.9% (three nines)    | 8.77 hours      | 43.8 minutes     | 10.1 minutes    |
+| 99.99% (four nines)    | 52.6 minutes    | 4.32 minutes     | 1.01 minutes    |
+| 99.999% (five nines)   | 5.25 minutes    | 25.9 seconds     | 6.05 seconds    |
+| 99.9999% (six nines)   | 31.56 seconds   | 2.59 seconds     | 604.8 milliseconds |
+| 99.99999% (seven nines)| 3.15 seconds    | 263 milliseconds | 60.5 milliseconds |
+| 99.999999% (eight nines)| 315.6 milliseconds | 26.3 milliseconds | 6 milliseconds |
+| 99.9999999% (nine nines)| 31.6 milliseconds | 2.6 milliseconds | 0.6 milliseconds |
+
+### Availability in Sequence vs Parallel
+
+If a service consists of multiple components prone to failure, the service's overall availability depends on whether the components are in sequence or in parallel.
+
+**Sequence**
+- Overall availability decreases when two components are in sequence.
+- For example, if both Foo and Bar each had 99.9% availability, their total availability in sequence would be 99.8%.
+
+**Parallel**
+- Overall availability increases when two components are in parallel.
+- For example, if both Foo and Bar each had 99.9% availability, their total availability in parallel would be 99.9999%.
+
+### Availability vs Reliability
+
+If a system is reliable, it is available. However, if it is available, it is not necessarily reliable. High reliability contributes to high availability, but it is possible to achieve high availability even with an unreliable system.
+
+### High Availability vs Fault Tolerance
+
+Both high availability and fault tolerance aim for high uptime levels but achieve it differently. A fault-tolerant system has no service interruption but is significantly more costly, while a highly available system has minimal service interruption.
+
+---
+
+# Scalability
+
+Scalability is the measure of how well a system responds to changes by adding or removing resources to meet demands.
+
+### Types of Scaling
+
+**Vertical Scaling**
+- Expands a system's scalability by adding more power to an existing machine.
+- Advantages: Simple to implement, easier to manage, data consistent.
+- Disadvantages: Risk of high downtime, harder to upgrade, can be a single point of failure.
+
+**Horizontal Scaling**
+- Expands a system's scale by adding more machines.
+- Advantages: Increased redundancy, better fault tolerance, flexible and efficient, easier to upgrade.
+- Disadvantages: Increased complexity, data inconsistency, increased load on downstream services.
+
+---
+
+# Storage
+
+Storage is a mechanism that enables a system to retain data, either temporarily or permanently.
+
+### RAID (Redundant Array of Independent Disks)
+
+RAID is a way of storing the same data on multiple hard disks or solid-state drives (SSDs) to protect data in case of a drive failure.
+
+**RAID Levels:**
+- **RAID 0**: Striping. Data is split evenly across all the drives in the array.
+- **RAID 1**: Mirroring. At least two drives contain an exact copy of a set of data.
+- **RAID 5**: Striping with parity. Requires at least 3 drives. Data is striped across multiple drives with a distributed parity.
+- **RAID 6**: Striping with double parity. Similar to RAID 5 but with parity written to two drives.
+- **RAID 10**: Combines striping and mirroring. Provides security by mirroring all data on secondary drives while using striping to speed up data transfers.
+
+### Volumes
+
+A volume is a fixed amount of storage on a disk or tape. A single disk can contain more than one volume, or a volume can span more than one disk.
+
+### File Storage
+
+File storage is a solution to store data as files and present it to users as a hierarchical directory structure. It provides a user-friendly solution for storing and retrieving files.
+
+**Examples
+
+ of File Storage:**
+- NFS
+- SMB/CIFS
+- AFP
+
+### Block Storage
+
+Block storage splits the data into evenly sized blocks of data and stores each block separately with its unique identifier.
+
+**Examples of Block Storage:**
+- SAN
+- iSCSI
+- FCP
+
+### Object Storage
+
+Object storage stores data as objects rather than a file hierarchy. Each object is identified by a unique identifier and is stored in a flat address space, making it easy to retrieve.
+
+**Examples of Object Storage:**
+- Amazon S3
+- Google Cloud Storage
+- Azure Blob Storage
+
+# Databases and DBMS
+
+## What is a Database?
+A database is an organized collection of structured information, or data, typically stored electronically in a computer system. It is usually controlled by a Database Management System (DBMS). Together, the data and the DBMS, along with the associated applications, are referred to as a database system, often shortened to just database.
+
+## What is DBMS?
+A Database Management System (DBMS) is a comprehensive software program that serves as an interface between the database and its end-users or programs. It allows users to retrieve, update, and manage how information is organized and optimized. A DBMS also facilitates administrative operations such as performance monitoring, tuning, backup, and recovery.
+
+## Components
+
+### Schema
+A schema defines the shape of a data structure and specifies what kinds of data can go where. Schemas can be strictly enforced across the entire database, loosely enforced on part of the database, or might not exist at all.
+
+### Table
+Each table contains various columns, similar to a spreadsheet. A table can have as few as two columns or upwards of a hundred or more, depending on the type of information being stored.
+
+### Column
+A column contains a set of data values of a particular type, one value for each row in the database. Columns may contain text values, numbers, enums, timestamps, etc.
+
+### Row
+Data in a table is recorded in rows. There can be thousands or millions of rows in a table containing any particular information.
+
+## Types of Databases
+
+### SQL
+- Relational databases that store data in tables with predefined schemas.
+- Examples: PostgreSQL, MySQL, MariaDB, Amazon Aurora.
+
+### NoSQL
+- Non-relational databases with flexible schemas.
+- Types include Document, Key-value, Graph, Time-series, Wide-column, and Multi-model.
+- Examples: MongoDB, Redis, Neo4j, InfluxDB, BigTable.
+
+## Challenges
+
+1. **Absorbing significant increases in data volume**: Handling data from various sources.
+2. **Ensuring data security**: Protecting data from breaches while keeping it accessible.
+3. **Keeping up with demand**: Providing real-time access to support decision-making.
+4. **Managing and maintaining the database and infrastructure**: Hiring talent to manage growing data complexities.
+5. **Removing limits on scalability**: Ensuring data management grows with business needs.
+6. **Ensuring data residency, sovereignty, or latency requirements**: Optimizing on-premises solutions for specific use cases.
+
+## SQL Databases
+
+### Materialized Views
+- Pre-computed data sets derived from query specifications, stored for later use.
+- Improve performance of complex queries on large datasets.
+
+### N+1 Query Problem
+- Occurs when executing N additional SQL statements to fetch data that could be retrieved in the primary SQL query.
+- Common in GraphQL and ORM tools, can be mitigated by optimizing queries or using data loaders.
+
+### Advantages
+- Simple and accurate
+- Data consistency
+- Flexibility
+
+### Disadvantages
+- Expensive to maintain
+- Difficult schema evolution
+- Performance hits from joins and denormalization
+- Poor horizontal scalability
+
+## NoSQL Databases
+
+### Document Databases
+- Store information in documents.
+- Examples: MongoDB, Amazon DocumentDB.
+
+### Key-value Databases
+- Save data as key-value pairs.
+- Examples: Redis, Memcached.
+
+### Graph Databases
+- Use graph structures with nodes, edges, and properties.
+- Examples: Neo4j, Amazon Neptune.
+
+### Time-series Databases
+- Optimized for time-stamped data.
+- Examples: InfluxDB, Apache Druid.
+
+### Wide-column Databases
+- Store data in column families rather than rows and columns.
+- Examples: BigTable, Apache Cassandra.
+
+### Multi-model Databases
+- Combine different database models.
+- Examples: ArangoDB, Azure Cosmos DB.
+
+## SQL vs NoSQL Databases
+
+### High-level Differences
+- **Storage**: SQL uses tables; NoSQL uses models like key-value, graph, document.
+- **Schema**: SQL has fixed schemas; NoSQL has dynamic schemas.
+- **Querying**: SQL uses structured query language; NoSQL varies.
+- **Scalability**: SQL is vertically scalable; NoSQL is horizontally scalable.
+- **Reliability**: SQL is ACID compliant; NoSQL often sacrifices ACID for performance.
+
+### Reasons for Choosing
+- **SQL**: Structured data, relational data, complex joins, transactions.
+- **NoSQL**: Dynamic schema, non-relational data, high throughput, flexible scaling.
+
+## Database Replication
+
+### Master-Slave Replication
+- Master serves reads and writes; replicates writes to slaves.
+- Advantages: No impact on master during backups, read from slaves, offline syncing.
+- Disadvantages: Additional complexity, master failure downtime, replication lag.
+
+### Master-Master Replication
+- Both masters serve reads/writes.
+- Advantages: Distributes write load, quick failover.
+- Disadvantages: Increased complexity, synchronization latency, conflict resolution.
+
+### Synchronous vs Asynchronous Replication
+- **Synchronous**: Data written to primary and replica simultaneously.
+- **Asynchronous**: Data copied to replica after being written to primary, often scheduled.
+
+
+Great overview of database indexing, normalization, denormalization, and consistency models! Here’s a summary and some additional insights:
+
+### **Indexes**
+
+**Dense Indexes:**
+- **Definition:** Index record for every row in the table.
+- **Pros:** Quick lookups with binary search.
+- **Cons:** More memory usage and maintenance overhead.
+
+**Sparse Indexes:**
+- **Definition:** Index records for some of the rows in the table.
+- **Pros:** Less memory usage and maintenance, faster updates.
+- **Cons:** Slower lookups due to additional scans.
+
+### **Normalization**
+
+**Goals:**
+- Eliminate redundancy.
+- Ensure consistency.
+- Make database structure flexible.
+
+**Normal Forms:**
+
+1. **1NF (First Normal Form):**
+   - No repeating groups.
+   - Each set of related data has a primary key.
+   - No mixed data types in columns.
+
+2. **2NF (Second Normal Form):**
+   - Meets 1NF.
+   - No partial dependencies (all non-key attributes are fully dependent on the primary key).
+
+3. **3NF (Third Normal Form):**
+   - Meets 2NF.
+   - No transitive dependencies (non-key attributes should not depend on other non-key attributes).
+
+4. **BCNF (Boyce-Codd Normal Form):**
+   - Meets 3NF.
+   - For every functional dependency \( X \to Y \), \( X \) should be a super key.
+
+**Advantages of Normalization:**
+- Reduces redundancy.
+- Ensures consistency.
+- Enforces referential integrity.
+
+**Disadvantages of Normalization:**
+- Complex design.
+- Slower performance due to more joins.
+- Higher maintenance.
+
+### **Denormalization**
+
+**Definition:**
+- Adding redundant data to one or more tables to improve read performance and reduce complex joins.
+
+**Advantages:**
+- Faster retrieval.
+- Simplified queries.
+- Reduced number of tables.
+
+**Disadvantages:**
+- Increased data redundancy.
+- More complex database design.
+- Risk of inconsistency.
+
+### **Consistency Models**
+
+**ACID:**
+- **Atomicity:** All or nothing.
+- **Consistency:** Maintains database invariants.
+- **Isolation:** Transactions do not interfere.
+- **Durability:** Changes are permanent after commit.
+
+**BASE:**
+- **Basic Availability:** System always responds.
+- **Soft-state:** Data may not be consistent immediately.
+- **Eventual Consistency:** Data will eventually be consistent.
+
+**Trade-offs:**
+- **ACID:** Suitable for scenarios needing strict consistency.
+- **BASE:** Suitable for scenarios requiring high availability and scalability.
+
+### **CAP Theorem**
+
+**Characteristics:**
+- **Consistency:** All nodes see the same data.
+- **Availability:** System always responds.
+- **Partition Tolerance:** System continues despite network failures.
+
+**Types:**
+- **CA (Consistency + Availability):** No partition tolerance.
+- **CP (Consistency + Partition Tolerance):** May sacrifice availability.
+- **AP (Availability + Partition Tolerance):** May sacrifice consistency.
+
+### **PACELC Theorem**
+
+**Extension of CAP:**
+- **Else (E):** Even when there is no partition, trade-offs between Latency (L) and Consistency (C).
+
+**Trade-offs:**
+- Systems must choose between consistency and latency during normal operations and between consistency and availability during network partitions.
+
+### **Transactions**
+
+**States:**
+- **Active:** Transaction in progress.
+- **Partially Committed:** Final operation executed.
+- **Committed:** Successful execution.
+- **Failed:** Check failure.
+- **Aborted:** Rollback to the original state.
+- **Terminated:** Ready for new transactions.
+
+**Distributed Transactions:**
+- **Two-Phase Commit (2PC):** Coordination for commit/abort decisions.
+- **Three-Phase Commit (3PC):** Adds a pre-commit phase to avoid blocking.
+- **Sagas:** Sequence of local transactions with compensating actions for failure recovery.
+
+Each model and approach has its strengths and trade-offs, and the choice depends on the specific needs and constraints of the application. Understanding these concepts helps in designing robust, efficient, and scalable databases.
