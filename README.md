@@ -50,4 +50,391 @@
    - **Use Case**: Common for consumer equipment and personal use.
    - **Example**: Often used for regular home internet connections.
 
-These notes should give you a concise understanding of system design and IP addresses.
+
+### OSI Model
+
+**What is the OSI Model?**
+- **Definition**: Logical and conceptual model defining network communication for systems.
+- **Purpose**: Describes computer packet transfer using various protocol layers.
+- **Concept**: Universal language for computer networking; splits communication into seven abstract layers.
+
+**Importance of the OSI Model**
+- **Terminology**: Defines common networking terms.
+- **Troubleshooting**: Simplifies troubleshooting and threat identification.
+- **Interoperability**: Encourages hardware compatibility.
+- **Security**: Promotes a security-first mindset.
+- **Modularity**: Breaks complex functions into simpler components.
+
+**Layers of the OSI Model**
+1. **Application**
+   - **Interaction**: Directly interacts with user data.
+   - **Protocols**: HTTP, SMTP.
+   - **Function**: Data manipulation for software applications.
+
+2. **Presentation**
+   - **Translation**: Translates data from the application layer.
+   - **Functions**: Translation, encryption/decryption, compression.
+
+3. **Session**
+   - **Communication**: Manages opening and closing of communication sessions.
+   - **Functions**: Synchronizes data transfer with checkpoints.
+
+4. **Transport**
+   - **End-to-End Communication**: Breaks data into segments; ensures data reassembly.
+   - **Protocols**: TCP.
+
+5. **Network**
+   - **Data Transfer**: Manages data transfer between different networks.
+   - **Routing**: Finds the best path for data packets.
+
+6. **Data Link**
+   - **Same Network Transfer**: Manages data transfer within the same network.
+   - **Frames**: Converts packets into frames.
+
+7. **Physical**
+   - **Hardware**: Involves physical equipment like cables and switches.
+   - **Bit Stream**: Converts data into a bit stream (1s and 0s).
+
+### TCP and UDP
+
+**TCP (Transmission Control Protocol)**
+- **Connection-Oriented**: Establishes a connection for two-way data transmission.
+- **Reliability**: Ensures data is delivered in order with error-checking.
+- **Use Cases**: Suitable for transferring still images, data files, web pages.
+- **Overhead**: Higher overhead due to feedback mechanisms.
+
+**UDP (User Datagram Protocol)**
+- **Connectionless**: Sends data without establishing a connection.
+- **Efficiency**: No overhead for connection management.
+- **Use Cases**: Ideal for real-time communications like video streaming, DNS, VoIP.
+- **Speed**: Faster and simpler than TCP but no guarantee of data delivery.
+
+**Comparison: TCP vs. UDP**
+| Feature            | TCP                                     | UDP                                   |
+|--------------------|-----------------------------------------|---------------------------------------|
+| **Connection**     | Requires established connection         | Connectionless protocol               |
+| **Delivery**       | Guarantees data delivery                | No delivery guarantee                 |
+| **Re-Transmission**| Possible                                | Not possible                          |
+| **Speed**          | Slower                                  | Faster                                |
+| **Broadcasting**   | Does not support                        | Supports broadcasting                 |
+| **Use Cases**      | HTTPS, HTTP, SMTP, POP, FTP             | Video streaming, DNS, VoIP            |
+
+
+### Domain Name System (DNS)
+
+The **Domain Name System (DNS)** is a hierarchical and decentralized naming system used for translating human-readable domain names (like google.com) to IP addresses (like 122.250.192.232). This system makes it easier for humans to remember and use internet addresses.
+
+---
+
+### How DNS Works
+
+DNS lookup involves the following steps:
+
+1. **DNS Resolver**: A client types a domain (e.g., example.com) into a web browser. The query is received by a DNS resolver.
+2. **Root Server Query**: The resolver queries a DNS root nameserver.
+3. **TLD Server Referral**: The root server responds with the address of a Top-Level Domain (TLD) server (e.g., .com).
+4. **TLD Server Query**: The resolver queries the TLD server.
+5. **Domain Nameserver Referral**: The TLD server responds with the IP address of the domain's nameserver.
+6. **Domain Nameserver Query**: The resolver queries the domain's nameserver.
+7. **IP Address Retrieval**: The domain's nameserver returns the IP address of the requested domain.
+8. **Client Response**: The DNS resolver returns the IP address to the client's web browser.
+
+Once the IP address is resolved, the client can request content from the resolved IP address, like loading a webpage.
+
+---
+
+### Server Types
+
+#### DNS Resolver
+
+- Acts as a middleman between a client and a DNS nameserver.
+- Responds with cached data or queries root, TLD, and authoritative nameservers to find the IP address.
+
+#### DNS Root Server
+
+- Directs the resolver to the appropriate TLD nameserver based on the domain extension (.com, .net, .org, etc.).
+- Managed by the Internet Corporation for Assigned Names and Numbers (ICANN).
+
+#### TLD Nameserver
+
+- Maintains information for domains sharing a common extension (e.g., .com, .net).
+- Managed by the Internet Assigned Numbers Authority (IANA), a branch of ICANN.
+
+#### Authoritative DNS Server
+
+- The final step in the DNS query process.
+- Provides the resolver with the IP address or alias (CNAME) for the domain.
+- Returns an NXDOMAIN message if the domain cannot be found.
+
+---
+
+### Query Types
+
+1. **Recursive**: Requires a DNS server to respond with either the requested resource or an error message if not found.
+2. **Iterative**: The DNS resolver returns the best answer it can, either from its cache or by referring the client to another DNS server.
+3. **Non-recursive**: The resolver responds immediately with cached data or queries an authoritative nameserver directly.
+
+---
+
+### Record Types
+
+- **A (Address record)**: Holds the IPv4 address of a domain.
+- **AAAA (IPv6 Address record)**: Holds the IPv6 address of a domain.
+- **CNAME (Canonical Name record)**: Forwards one domain or subdomain to another without providing an IP address.
+- **MX (Mail Exchanger record)**: Directs mail to an email server.
+- **TXT (Text record)**: Stores text notes, often for email security.
+- **NS (Name Server records)**: Stores the name server for a DNS entry.
+- **SOA (Start of Authority)**: Stores admin information about a domain.
+- **SRV (Service Location record)**: Specifies a port for specific services.
+- **PTR (Pointer record)**: Provides a domain name in reverse lookups.
+- **CERT (Certificate record)**: Stores public key certificates.
+
+---
+
+### Subdomains
+
+A subdomain is an additional part of the main domain, used to logically separate sections of a website (e.g., blog.example.com, support.example.com).
+
+---
+
+### DNS Zones
+
+A DNS zone is a distinct part of the domain namespace, managed by an entity responsible for maintaining it. It allows for granular control of DNS components like authoritative name servers.
+
+---
+
+### DNS Caching
+
+A DNS cache stores recent DNS lookups temporarily. Each DNS record has a TTL (Time-To-Live) value, specifying how long it can be cached. Once the TTL expires, the record is purged, and a new DNS resolution process must start.
+
+---
+
+### Reverse DNS
+
+A reverse DNS lookup queries the domain name associated with an IP address using PTR records. Commonly used by email servers to verify the validity of incoming messages, though not critical for internet functionality.
+
+---
+
+### Examples of Managed DNS Solutions
+
+- **Route53**
+- **Cloudflare DNS**
+- **Google Cloud DNS**
+- **Azure DNS**
+- **NS1**
+
+
+## Load Balancing
+
+Load balancing is a critical technique in network infrastructure, used to distribute incoming network traffic across multiple servers, ensuring high availability and reliability by directing requests only to servers that are online. This allows for the flexible addition or removal of servers as demand changes.
+
+### Why Load Balancing?
+
+Modern high-traffic websites must serve hundreds of thousands, if not millions, of concurrent requests from users or clients. To cost-effectively scale to meet these high volumes, modern computing best practices generally require adding more servers. A load balancer can:
+
+- **Distribute client requests across all capable servers** to maximize speed and capacity utilization.
+- **Prevent any single server from being overworked**, which could degrade performance.
+- **Redirect traffic** if a server goes down, ensuring continuous availability.
+- **Automatically integrate new servers** into the network, sending requests to them as they come online.
+
+### Workload Distribution
+
+Load balancers distribute requests in several common ways:
+
+- **Host-based**: Based on the requested hostname.
+- **Path-based**: Using the entire URL to distribute requests.
+- **Content-based**: Inspects message content to distribute requests based on parameters.
+
+### Load Balancing Layers
+
+Load balancers generally operate at one of two levels:
+
+1. **Network Layer (Layer 4)**: Routes based on networking information such as IP addresses. These are often high-speed dedicated hardware devices.
+2. **Application Layer (Layer 7)**: Performs content-based routing by reading the entire request, allowing more sophisticated load management.
+
+### Types of Load Balancers
+
+- **Software Load Balancers**: Easier to deploy, cost-effective, and flexible. They can be installed or used as a managed cloud service.
+- **Hardware Load Balancers**: Physical devices that handle large traffic volumes but are less flexible and more expensive.
+- **DNS Load Balancers**: Distribute requests based on DNS configuration. However, they lack reliability and efficiency because DNS does not check for server outages.
+
+### Routing Algorithms
+
+Commonly used routing algorithms include:
+
+- **Round-robin**: Distributes requests sequentially.
+- **Weighted Round-robin**: Accounts for server capacity with assigned weights.
+- **Least Connections**: Directs requests to the server with the fewest connections.
+- **Least Response Time**: Combines response time and active connections to select servers.
+- **Least Bandwidth**: Measures traffic in Mbps, sending requests to the server with the least traffic.
+- **Hashing**: Uses a key (e.g., client IP or request URL) to distribute requests.
+
+### Advantages
+
+Load balancing prevents downtime and offers several benefits:
+
+- **Scalability**: Easily add or remove servers based on demand.
+- **Redundancy**: Ensures continuous availability.
+- **Flexibility**: Adapt to different traffic conditions and requirements.
+- **Efficiency**: Optimizes resource utilization and response times.
+
+### Redundant Load Balancers
+
+To avoid the load balancer being a single point of failure, multiple load balancers can be used in a cluster mode. If the active load balancer fails, a passive one can take over, enhancing fault tolerance.
+
+### Desired Features
+
+Common features of load balancers include:
+
+- **Autoscaling**: Adjusting resources in response to demand.
+- **Sticky Sessions**: Maintaining session state by directing the same user to the same resource.
+- **Health Checks**: Removing poor-performing or downed resources from the pool.
+- **Persistent Connections**: Keeping long-term connections open (e.g., WebSockets).
+- **Encryption**: Managing encrypted connections (TLS, SSL).
+- **Certificates**: Handling and authenticating certificates.
+- **Compression**: Reducing response sizes.
+- **Caching**: Storing responses to speed up repeated requests.
+- **Logging**: Recording metadata for audit trails and analytics.
+- **Request Tracing**: Tracking requests for monitoring and troubleshooting.
+- **Redirects**: Directing requests based on specific conditions.
+- **Fixed Responses**: Returning static responses, such as error messages.
+
+### Examples
+
+Some commonly used load balancing solutions in the industry include:
+
+- **Amazon Elastic Load Balancing**
+- **Azure Load Balancing**
+- **GCP Load Balancing**
+- **DigitalOcean Load Balancer**
+- **Nginx**
+- **HAProxy**
+
+### Clustering
+
+#### Overview
+A computer cluster is a collection of interconnected computers, known as nodes, that work together to perform tasks. This setup allows for the distribution of workloads among the nodes, leveraging their combined processing power and memory to enhance overall performance. Clusters are particularly beneficial for tasks that can be parallelized, meaning they can be divided into smaller sub-tasks that run simultaneously on different nodes.
+
+#### Building a Cluster
+To create a computer cluster:
+1. **Network Connection**: Nodes must be connected via a network to enable communication.
+2. **Software**: Specialized software is used to link the nodes and form the cluster.
+3. **Storage**: Clusters may use shared storage devices or local storage on each node.
+
+#### Leader Node
+Typically, one node acts as the leader or master node, serving as the entry point for tasks. This node:
+- Delegates incoming work to other nodes.
+- Aggregates results and returns a response to the user.
+
+A well-designed cluster should function seamlessly, making the user unaware of the underlying multi-node structure. The cluster should minimize latency and avoid communication bottlenecks between nodes.
+
+### Types of Clusters
+
+#### Highly Available (HA) or Fail-Over Clusters
+These clusters ensure that applications remain available even if some nodes fail.
+
+#### Load Balancing Clusters
+These clusters distribute workloads evenly across nodes to prevent any single node from becoming overloaded.
+
+#### High-Performance Computing (HPC) Clusters
+These clusters are designed for intensive computational tasks, providing significant processing power.
+
+### High Availability Configurations
+
+#### Active-Active
+- **Setup**: Multiple nodes run the same service simultaneously.
+- **Purpose**: Achieves load balancing, improving throughput and response times.
+
+#### Active-Passive
+- **Setup**: At least one active node and one passive (standby) node.
+- **Purpose**: The passive node takes over if the active node fails, ensuring service continuity.
+
+### Advantages of Clustering
+1. **High Availability**: Ensures continuous operation even if some nodes fail.
+2. **Scalability**: Easy to add more nodes to handle increased workloads.
+3. **Performance**: Leverages combined resources for better performance.
+4. **Cost-Effective**: Can be more cost-effective than a single powerful machine.
+
+### Load Balancing vs. Clustering
+- **Clustering**: Nodes work together towards a common goal, providing redundancy and increased capacity.
+- **Load Balancing**: Distributes incoming traffic across servers, which are not necessarily aware of each other.
+
+### Challenges
+- **Complexity**: Installing and maintaining software across multiple nodes.
+- **Homogeneity**: Ensuring nodes have similar configurations for optimal performance.
+- **Resource Utilization**: Monitoring and managing resources across nodes.
+- **Storage Management**: Preventing data overwriting and ensuring data consistency in distributed storage.
+
+### Examples of Clustering in Technology
+- **Containers**: Kubernetes, Amazon ECS
+- **Databases**: Cassandra, MongoDB
+- **Cache Systems**: Redis
+
+### Caching
+
+#### Overview
+Caching improves data retrieval performance by storing frequently accessed data in a fast, temporary storage layer. This reduces the need to access the slower primary storage layer.
+
+#### Caching Mechanism
+- **Memory Hierarchy**: Caches store data at various levels (L1, L2, L3, etc.) with L1 being the fastest.
+- **Data Retrieval**: When data is requested, the cache is searched from the fastest to the slowest level. If data is found, it's a cache hit; if not, it's a cache miss and the data is written to the cache for future access.
+
+### Cache Hit and Cache Miss
+
+#### Cache Hit
+- **Definition**: Data is successfully retrieved from the cache.
+- **Types**:
+  - **Hot Cache**: Fastest retrieval (L1).
+  - **Warm Cache**: Moderate speed (L2, L3).
+  - **Cold Cache**: Slowest but still faster than primary storage.
+
+#### Cache Miss
+- **Definition**: Data is not found in the cache and must be fetched from the primary storage.
+- **Result**: Data is then written to the cache.
+
+### Cache Invalidation
+- **Process**: Removing or updating outdated cache entries to ensure data consistency.
+- **Methods**:
+  - **Write-through**: Data is written to both cache and storage simultaneously.
+  - **Write-around**: Data is written directly to storage, bypassing the cache.
+  - **Write-back**: Data is written to cache first, then asynchronously to storage.
+
+### Eviction Policies
+- **FIFO (First In First Out)**: Evicts the oldest entry.
+- **LIFO (Last In First Out)**: Evicts the most recent entry.
+- **LRU (Least Recently Used)**: Evicts the least recently used entry.
+- **MRU (Most Recently Used)**: Evicts the most recently used entry.
+- **LFU (Least Frequently Used)**: Evicts the least frequently used entry.
+- **Random Replacement (RR)**: Evicts a random entry.
+
+### Distributed Cache
+- **Definition**: Pools together memory from multiple computers into a single in-memory data store.
+- **Benefit**: Overcomes memory limits of a single computer.
+
+### Global Cache
+- **Definition**: A single shared cache used by all application nodes.
+- **Responsibility**: Finds missing data from the underlying data store when not found in the cache.
+
+### Use Cases of Caching
+- **Database Caching**: Improves database query performance.
+- **Content Delivery Network (CDN)**: Accelerates content delivery to users.
+- **Domain Name System (DNS) Caching**: Speeds up domain name resolutions.
+- **API Caching**: Reduces API response times.
+
+### When Not to Use Caching
+- **Equivalent Access Times**: If cache access time is similar to primary storage access time.
+- **Low Repetition**: When data requests are highly random.
+- **Frequent Data Changes**: When data changes often, causing cache to become out-of-sync.
+
+### Advantages of Caching
+- **Improves Performance**: Faster data retrieval.
+- **Reduces Latency**: Decreases response times.
+- **Lowers Database Load**: Reduces the number of direct database queries.
+- **Reduces Network Costs**: Decreases data transfer costs.
+- **Increases Read Throughput**: Enhances the speed of read operations.
+
+### Examples of Caching Technologies
+- **Redis**
+- **Memcached**
+- **Amazon Elasticache**
+- **Aerospike**
